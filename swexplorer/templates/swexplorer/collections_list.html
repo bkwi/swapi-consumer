@@ -1,0 +1,27 @@
+{% extends 'swexplorer/base.html'  %}
+{% load static %}
+
+
+{% block page_content %}
+
+{% verbatim %}
+
+<section id="app" class="container mt-2">
+
+    <div class="columns is-vcentered">
+        <div class="column is-1">
+            Collections
+        </div>
+        <div class="column is-2">
+            <button class="button" @click="fetchCollections">Fetch</button>
+        </div>
+    </div>
+</section>
+
+{% endverbatim %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'swexplorer/js/collections_list.js' %}"></script>
+{% endblock %}
