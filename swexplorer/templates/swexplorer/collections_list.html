@@ -13,7 +13,14 @@
             Collections
         </div>
         <div class="column is-2">
-            <button class="button" @click="fetchCollections">Fetch</button>
+            <button class="button" @click="fetchCollections">
+                <span v-if="processing"span>
+                    <i class="fas fa-cog fa-spin"></i>
+                </span>
+                <span v-else>
+                    Fetch
+                </span>
+            </button>
         </div>
     </div>
 </section>
