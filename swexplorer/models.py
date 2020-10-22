@@ -1,3 +1,9 @@
 from django.db import models
 
-# Create your models here.
+
+class Collection(models.Model):
+    filename = models.CharField(max_length=32)
+    created_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_at']

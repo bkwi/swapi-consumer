@@ -8,7 +8,7 @@
 
 <section id="app" class="container mt-2">
 
-    <div class="columns is-vcentered">
+    <div class="columns is-vcentered mb-2">
         <div class="column is-1">
             Collections
         </div>
@@ -21,6 +21,20 @@
                     Fetch
                 </span>
             </button>
+        </div>
+    </div>
+
+    <div class="columns">
+        <div class="column is-3">
+            <table class="table is-fullwidth is-hoverable is-striped">
+
+                <tbody>
+                    <tr v-for="item in collections">
+                        <td><a v-bind:href='"/collections/" + item.id'>{{ item.created_at }}</a></td>
+                    </tr>
+                </tbody>
+
+            </table>
         </div>
     </div>
 </section>

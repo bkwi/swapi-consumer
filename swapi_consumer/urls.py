@@ -4,7 +4,7 @@ from swexplorer import views
 
 
 urlpatterns = [
-    path('', views.Collections.as_view(), name='collections'),
+    path('', views.CollectionsList.as_view(), name='collections-list'),
 
-    path('api/fetch-collections', views.FetchCollection.as_view()),
+    path('api/collections', views.CollectionsAPI.as_view()),
 ]
