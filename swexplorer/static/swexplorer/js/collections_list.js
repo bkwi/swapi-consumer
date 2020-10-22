@@ -13,10 +13,9 @@ const app = new Vue({
             this.processing = true
             this.$http.post('/api/fetch-collections', {}, reqOptions).then(response => {
                 this.processing = false;
-                console.log("fetch response", response);
             }, response => {
                 this.processing = false;
-                alert(`Something went wrong! Response status: ${response.status}`);
+                alert(`Something went wrong! ${response.body.error}`);
             });
         },
     }

@@ -9,7 +9,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# SWAPI_HOST = 'https://swapi.dev'
 SWAPI_HOST = 'http://localhost:8020'
+
+DATASET_FOLDER = BASE_DIR / 'collections'
 
 
 INSTALLED_APPS = [
