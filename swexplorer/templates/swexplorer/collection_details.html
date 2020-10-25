@@ -1,0 +1,41 @@
+{% extends 'swexplorer/base.html'  %}
+{% load static %}
+
+
+{% block page_content %}
+
+{% verbatim %}
+
+<section id="app" class="container mt-2">
+
+    <table class="table is-fullwidth is-hoverable is-striped">
+        <thead>
+            <tr>
+                <th v-for="h in headers">
+                    {{ h }}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="row in rows">
+                <td v-for="item in row">
+                    {{ item }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button class="button" @click="loadMore">
+        Load more
+    </button>
+
+</section>
+
+{% endverbatim %}
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="{% static 'swexplorer/js/collection_details.js' %}"></script>
+{% endblock %}

@@ -13,7 +13,7 @@ class CollectionsList(TemplateView):
     template_name = 'swexplorer/collections_list.html'
 
 
-class CollectionsAPI(View):
+class CollectionsListAPI(View):
     def get(self, request):
         response = {
             'collections': [
@@ -28,6 +28,7 @@ class CollectionsAPI(View):
     def post(self, request):
         filename = uuid.uuid4().hex
         filepath = f'{settings.DATASET_FOLDER}/{filename}.csv'
+
         try:
             utils.fetch_collection(filepath=filepath)
         except Exception:
@@ -39,4 +40,19 @@ class CollectionsAPI(View):
         return JsonResponse({
             'id': c.id,
             'created_at': c.created_at.strftime('%c')
+        })
+
+
+class CollectionDetails(TemplateView):
+    template_name = 'swexplorer/collection_details.html'
+
+
+class CollectionData(View):
+    def get(self, request, collection_id):
+        filename = Collection.objects.get(id=collection_id).filename
+        filepath = f'{settings.DATASET_FOLDER}/{filename}.csv'
+        headers, rows = utils.load_more(filepath)
+        return JsonResponse({
+            'headers': headers,
+            'rows': rows
         })

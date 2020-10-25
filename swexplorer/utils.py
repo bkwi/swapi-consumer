@@ -6,7 +6,7 @@ import requests
 import petl as etl
 
 
-FIELDS = [
+FIELDS_WE_GET = [
     'name',
     'height',
     'mass',
@@ -17,8 +17,10 @@ FIELDS = [
     'gender',
     'homeworld',
     'created',
-    'edited'
+    'edited',
 ]
+
+FIELDS_WE_NEED = FIELDS_WE_GET[:-2] + ['date']
 
 
 @lru_cache()
@@ -34,8 +36,7 @@ def resolve_homeworld(url):
 def fetch_collection(filepath):
     addr = f'{settings.SWAPI_HOST}/api/people'
 
-    headers = [FIELDS]
-    etl.tocsv(headers, filepath)
+    etl.tocsv([FIELDS_WE_NEED], filepath)
 
     while addr:
         response = requests.get(addr).json()
@@ -44,12 +45,21 @@ def fetch_collection(filepath):
         table_columns = [
             [
                 item[column_name] for item in response['results']
-            ] for column_name in FIELDS
+            ] for column_name in FIELDS_WE_GET
         ]
 
         table = (
-            etl.fromcolumns(table_columns, header=FIELDS)
+            etl.fromcolumns(table_columns, header=FIELDS_WE_GET)
             .convert('homeworld', resolve_homeworld)
             .addfield('date', lambda rec: rec['edited'].split('T')[0])
+            .cutout('created')
+            .cutout('edited')
         )
+
         etl.appendcsv(table, filepath)
+
+
+def load_more(filepath, length=10, offset=0):
+    table = etl.fromcsv(filepath)
+    rows = etl.rowslice(table, offset, length).dicts()
+    return etl.header(table), list(rows)
