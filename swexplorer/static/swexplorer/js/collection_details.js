@@ -3,7 +3,7 @@ const app = new Vue({
 
     data: {
         collectionId: window.location.href.split('/').pop(),
-        page: 1,
+        nextPage: 1,
         headers: [],
         rows: []
     },
@@ -14,8 +14,10 @@ const app = new Vue({
 
     methods: {
         loadMore: function () {
-            this.$http.get(`/api/collection-data/${this.collectionId}`).then(response => {
+            let url = `/api/collection-data/${this.collectionId}/page/${this.nextPage}`;
+            this.$http.get(url).then(response => {
                 this.headers = response.body.headers;
+                this.nextPage = response.body.next_page;
                 response.body.rows.forEach(row => {
                     let rowValues = [];
                     this.headers.forEach(header => {

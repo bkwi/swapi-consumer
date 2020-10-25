@@ -30,13 +30,13 @@ class CollectionsListAPI(View):
         filepath = f'{settings.DATASET_FOLDER}/{filename}.csv'
 
         try:
-            utils.fetch_collection(filepath=filepath)
+            total_items = utils.fetch_collection(filepath=filepath)
         except Exception:
             if os.path.exists(filepath):
                 os.remove(filepath)
             return JsonResponse({'error': 'Failed to fetch dataset'}, status=500)
 
-        c = Collection.objects.create(filename=filename)
+        c = Collection.objects.create(filename=filename, total_items=total_items)
         return JsonResponse({
             'id': c.id,
             'created_at': c.created_at.strftime('%c')
@@ -48,11 +48,12 @@ class CollectionDetails(TemplateView):
 
 
 class CollectionData(View):
-    def get(self, request, collection_id):
-        filename = Collection.objects.get(id=collection_id).filename
-        filepath = f'{settings.DATASET_FOLDER}/{filename}.csv'
-        headers, rows = utils.load_more(filepath)
+    def get(self, request, collection_id, page):
+        collection = Collection.objects.get(id=collection_id)
+        filepath = f'{settings.DATASET_FOLDER}/{collection.filename}.csv'
+        headers, rows, next_page = utils.load_more(filepath, page, total_items=collection.total_items)
         return JsonResponse({
             'headers': headers,
-            'rows': rows
+            'rows': rows,
+            'next_page': next_page
         })

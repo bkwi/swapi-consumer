@@ -8,5 +8,5 @@ urlpatterns = [
     path('collections/<int:collection_id>', views.CollectionDetails.as_view(), name='collection-details'),
 
     path('api/collections', views.CollectionsListAPI.as_view()),
-    path('api/collection-data/<int:collection_id>', views.CollectionData.as_view())
+    path('api/collection-data/<int:collection_id>/page/<int:page>', views.CollectionData.as_view())
 ]

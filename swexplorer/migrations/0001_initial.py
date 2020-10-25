@@ -16,6 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('filename', models.CharField(max_length=32)),
+                ('total_items', models.IntegerField()),
                 ('created_at', models.DateTimeField(auto_now=True)),
             ],
         ),

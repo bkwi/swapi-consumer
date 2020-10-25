@@ -58,8 +58,14 @@ def fetch_collection(filepath):
 
         etl.appendcsv(table, filepath)
 
+    return response['count']
 
-def load_more(filepath, length=10, offset=0):
+
+def load_more(filepath, page, total_items):
+    length = 10
+    offset = (page - 1) * length
+
     table = etl.fromcsv(filepath)
-    rows = etl.rowslice(table, offset, length).dicts()
-    return etl.header(table), list(rows)
+    rows = etl.rowslice(table, offset, offset + length)
+    next_page = page + 1 if offset + length < total_items else None
+    return etl.header(table), list(rows.dicts()), next_page
