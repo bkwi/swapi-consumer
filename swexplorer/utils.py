@@ -69,3 +69,9 @@ def load_more(filepath, page, total_items):
     rows = etl.rowslice(table, offset, offset + length)
     next_page = page + 1 if offset + length < total_items else None
     return etl.header(table), list(rows.dicts()), next_page
+
+
+@lru_cache()
+def value_count(filepath, *values):
+    table = etl.fromcsv(filepath)
+    return list(etl.valuecounts(table, *values).dicts())

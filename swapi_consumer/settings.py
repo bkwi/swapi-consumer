@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -9,8 +10,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# SWAPI_HOST = 'https://swapi.dev'
-SWAPI_HOST = 'http://localhost:8020'
+SWAPI_HOST = os.getenv('SWAPI_HOST', 'https://swapi.dev')
 
 DATASET_FOLDER = BASE_DIR / 'collections'
 

@@ -8,26 +8,59 @@
 
 <section id="app" class="container mt-2">
 
-    <table class="table is-fullwidth is-hoverable is-striped mb-2">
-        <thead>
-            <tr>
-                <th v-for="h in headers">
+    <div class="field mb-6">
+        <label class="label">Value count options (select one or more to switch view):</label>
+        <div class="control">
+            <div class="buttons has-addons">
+                <button v-for="h in headers" class="button"
+                    v-bind:class="{ 'is-info':selectedHeaders.indexOf(h) !== -1 }"
+                    @click="headerClicked(h)">
                     {{ h }}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="row in rows">
-                <td v-for="item in row">
-                    {{ item }}
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                </button>
+            </div>
+        </div>
+    </div>
 
-    <button v-if="nextPage" class="button mb-4" @click="loadMore">
-        Load more
-    </button>
+    <div v-if="selectedHeaders.length > 0">
+        <table class="table is-fullwidth is-hoverable is-striped mb-2">
+            <thead>
+                <tr>
+                    <th v-for="h in valueCountHeaders">
+                        {{ h }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="item in valueCount">
+                    <td v-for="h in valueCountHeaders">
+                        {{ item[h] }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div v-else>
+        <table class="table is-fullwidth is-hoverable is-striped mb-2">
+            <thead>
+                <tr>
+                    <th v-for="h in headers">
+                        {{ h }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="row in rows">
+                    <td v-for="item in row">
+                        {{ item }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button v-if="nextPage" class="button mb-4" @click="loadMore">
+            Load more
+        </button>
+    </div>
 
 </section>
 

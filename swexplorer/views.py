@@ -30,6 +30,8 @@ class CollectionsListAPI(View):
         filepath = f'{settings.DATASET_FOLDER}/{filename}.csv'
 
         try:
+            # keeping things simple, but it would be better to execute
+            # tasks like this in a separate worker
             total_items = utils.fetch_collection(filepath=filepath)
         except Exception:
             if os.path.exists(filepath):
@@ -57,3 +59,12 @@ class CollectionData(View):
             'rows': rows,
             'next_page': next_page
         })
+
+
+class ValueCount(View):
+    def get(self, request, collection_id):
+        values = request.GET.getlist('values[]')
+        collection = Collection.objects.get(id=collection_id)
+        filepath = f'{settings.DATASET_FOLDER}/{collection.filename}.csv'
+        dicts = utils.value_count(filepath, *values)
+        return JsonResponse({'value_count': dicts})
