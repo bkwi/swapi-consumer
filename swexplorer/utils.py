@@ -27,7 +27,7 @@ FIELDS_WE_NEED = FIELDS_WE_GET[:-2] + ['date']
 def resolve_homeworld(url):
     """
     Get homeworld name from given url.
-    Use lru_cache to aviod multiple requests for the same resource
+    Use lru_cache to avoid multiple requests for the same resource
     """
     response = requests.get(url).json()
     return response['name']
